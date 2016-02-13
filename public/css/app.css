@@ -5749,4 +5749,10 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.form-control input {
+  height: 36px; }
+
+body {
+  padding-top: 70px; }
+
 /*# sourceMappingURL=app.css.map */
