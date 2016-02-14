@@ -12,8 +12,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password'
     ];
+
+    /**
+     * Relationships
+     */
+    public function clubs() { return $this->hasMany('App\Club'); }
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -23,4 +28,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function owns($relation) {
+      return $relation->user_id == $this->id;
+    }
 }

@@ -3,10 +3,27 @@
 @section('content')
 
   <div class="jumbotron">
-    <h1>Placehold Club</h1>
-    <p>This is a template showcasing the optional theme stylesheet included in Bootstrap. Use it as a starting point to create something more unique by building on or modifying it.</p>
 
-    <a href="clubs/create" class="btn btn-primary">Create A Club</a>
+    @if ($signedIn)
+      @if ($user)
+        <h2>Clubs</h2>
+        <hr>
+        @foreach ($user->clubs()->get() as $club)
+          <a href="{{$club->uri}}">{{ $club->name }}</a>
+        @endforeach
+        <hr>
+        <a href="clubs/create" class="btn btn-primary">Create a Club</a>
+      @else
+        <h2>You're clubless!</h2>
+        <p>Make a club now and stop being a dork.</p>
+        <a href="clubs/create" class="btn btn-primary">Create a Club</a>
+      @endif
+    @else
+      <h2>Want to join the fun?</h2>
+      <p>Join us and create your own placeholder club!</p>
+      <a href="/register" class="btn btn-primary">Register</a>
+    @endif
+
   </div>
 
 @stop

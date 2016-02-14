@@ -10,39 +10,87 @@ class Placeholder extends Model {
 
   protected $table = 'placeholders';
   protected $fillable = ['path', 'name', 'thumbnail_path'];
-  protected $baseDir = 'uploads/placeholders';
+  protected $file;
 
+  /**
+   * Boot function
+   */
+  protected static function boot() {
+    static::creating(function($placeholder) {
+      return $placeholder->upload();
+    });
+  }
+
+  /**
+   * Set up relationships
+   */
   public function club() {
     return $this->belongsTo('App\Club');
   }
 
-  public static function named($name) {
+  /**
+   * Make a placeholder image from a file
+   * @return placeholder
+   */
+  public static function fromFile(UploadedFile $file) {
+    $placeholder = new static;
+    $placeholder->file = $file;
 
-    return (new static)->saveAs($name);
-
+    return $placeholder->fill([
+      'name' => $placeholder->fileName(),
+      'path' => $placeholder->filePath(),
+      'thumbnail_path' => $placeholder->thumbnailPath()
+    ]);
   }
 
-  public function saveAs($name) {
-
-    $this->name = sprintf("%s-%s", time(), $name);
-    $this->path = sprintf("%s/%s", $this->baseDir, $this->name);
-    $this->thumbnail_path = sprintf("%s/tn-%s", $this->baseDir, $this->name);
-
-    return $this;
+  /**
+   * Create the file name from the file
+   * @return string
+   */
+  public function fileName() {
+    $name = time() . $this->file->getClientOriginalName();
+    $extension = $this->file->getClientOriginalExtension();
+    return "{$name}.{$extension}";
   }
 
-  public function move(UploadedFile $file) {
+  /**
+   * Create the file path
+   * @return string
+   */
+  public function filePath() {
+    return $this->baseDir() . '/' . $this->fileName();
+  }
 
-    $file->move($this->baseDir, $this->name);
+  /**
+   * Create the path for the thumbnail
+   * @return string
+   */
+  public function thumbnailPath() {
+    return $this->baseDir() . '/tn-' . $this->fileName();
+  }
+
+  /**
+   * Create the base directory path for uploads
+   * @return string
+   */
+  public function baseDir() {
+    return 'uploads/placeholders';
+  }
+
+  /**
+   * Upload the placeholder to the right directory
+   */
+  public function upload() {
+    $this->file->move($this->baseDir(), $this->fileName());
     $this->makeThumbnail();
 
     return $this;
   }
 
+  /**
+   * Make the thumbnail image
+    */
   public function makeThumbnail() {
-
-    Image::make($this->path)->fit(200)->save($this->thumbnail_path);
-
+    Image::make($this->filePath())->fit(200)->save($this->thumbnailPath());
   }
-
 }

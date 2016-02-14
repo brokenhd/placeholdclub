@@ -30,12 +30,12 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
-                    @else
-                      <li><a href="{{ url('#') }}">{{ Auth::user()->name }}</a></li>
+                    @if ($signedIn)
+                      <li><a href="{{ url('#') }}">{{ $user->name }}</a></li>
                       <li><a href="{{ url('/logout') }}">Logout</a></li>
+                    @else
+                      <li><a href="{{ url('/login') }}">Login</a></li>
+                      <li><a href="{{ url('/register') }}">Register</a></li>
                     @endif
                 </ul>
             </div>

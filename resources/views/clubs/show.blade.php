@@ -28,15 +28,17 @@
     </div>
   </div>
 
-  <form
-    id="addPlaceholdersForm"
-    class="dropzone"
-    action="{{ route('store_placeholder_path', [$club->slug]) }}"
-    method="POST">
+  @if ($user && $user->owns($club))
+    <form
+      id="addPlaceholdersForm"
+      class="dropzone"
+      action="{{ route('store_placeholder_path', [$club->slug]) }}"
+      method="POST">
 
-    {{ csrf_field() }}
+      {{ csrf_field() }}
 
-  </form>
+    </form>
+  @endif
 
 @stop
 

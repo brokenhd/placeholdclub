@@ -8,31 +8,55 @@ use App\Club;
 use App\Placeholder;
 use App\Http\Requests\ClubRequest;
 use App\Http\Controllers\Controller;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Http\Requests\AddPlaceholderRequest;
 
 class ClubsController extends Controller {
 
+  /**
+   * Add autho middleware to all of the clubs routes but the show and index
+   */
   public function __construct() {
-    $this->middleware('auth', ['except' => ['show']]);
+    $this->middleware('auth', ['except' => ['show', 'index']]);
+
+    parent::__construct();
   }
 
-  public function show($slug) {
-
-    $club = Club::where(compact('slug'))->firstOrFail();
-
-    return view('clubs.show', compact('club'));
-
-  }
-
-  public function create() {
-
+  /**
+   * Index method will take you to clubs create for now
+   * TODO:: Route this to some sort of clubs listing page, clubs.index
+   */
+  public function index() {
     return view('clubs.create');
-
   }
 
+  /**
+   * Detail page for clubs
+   *
+   * @return [type]       [description]
+   */
+  public function show($slug) {
+    $club = Club::where(compact('slug'))->firstOrFail();
+    
+    return view('clubs.show', compact('club'));
+  }
+
+  /**
+   * Show the create club view
+   */
+  public function create() {
+    return view('clubs.create');
+  }
+
+  /**
+   * Store the created club
+   *
+   * @param  ClubRequest $request [description]
+   * @return redirect to the created club
+   */
   public function store(ClubRequest $request) {
 
     $club = new Club;
+    $club->user_id = $this->user->id;
     $club->name = $request->name;
     $club->slug = strtolower($request->name);
     $club->description = $request->description;
@@ -40,29 +64,17 @@ class ClubsController extends Controller {
     $club->save();
 
     flash()->overlay('Club created!', 'Now start uploading images!');
-
-    return redirect()->back();
-
+    return redirect("clubs/$club->slug");
   }
 
   /**
-   * Upload the placeholder image
+   * Add a placeholder
    *
-   * @param Request $request [description]
+   * @param string $slug
+   * @param Request $request
    */
-  public function addPlaceholder($slug, Request $request) {
-
-    $this->validate($request, [
-      'placeholder' => 'required|mimes:jpg,png,gif'
-    ]);
-
-    $placeholder = $this->makePlaceholder($request->file('placeholder'));
-
+  public function addPlaceholder($slug, AddPlaceholderRequest $request) {
+    $placeholder = Placeholder::fromFile($request->file('placeholder'));
     Club::where(compact('slug'))->firstOrFail()->addPlaceholder($placeholder);
-
-  }
-
-  protected function makePlaceholder(UploadedFile $file) {
-    return Placeholder::named($file->getClientOriginalName())->move($file);
   }
 }
