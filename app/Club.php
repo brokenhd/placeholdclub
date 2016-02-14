@@ -15,6 +15,9 @@ class Club extends Model {
   public function placeholders() { return $this->hasMany('App\Placeholder'); }
   public function owner() { return $this->belongsTo('App\User', 'user_id'); }
 
+  /**
+   * A club is owned by a user
+   */
   public function ownedBy(User $user) {
     return $this->user_id == $user->id;
   }
@@ -26,6 +29,9 @@ class Club extends Model {
     return $this->placeholders()->save($placeholder);
   }
 
+  /**
+   * Get the path to the club
+   */
   public function getUriAttribute() {
     return '/clubs/' . $this->slug;
   }
