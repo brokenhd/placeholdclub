@@ -15,4 +15,11 @@ class Club extends Model {
     return $this->hasMany('App\Placeholder');
   }
 
+  /**
+   * Add the placeholder image to the club
+   */
+  public function addPlaceholder(Placeholder $placeholder) {
+    return $this->placeholders()->save($placeholder);
+  }
+
 }

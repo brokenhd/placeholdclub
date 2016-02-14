@@ -24,7 +24,7 @@ class ClubRequest extends Request
     public function rules()
     {
         return [
-          'name' => 'required'
+          'name' => 'required|alpha_dash|max:30'
         ];
     }
 }
