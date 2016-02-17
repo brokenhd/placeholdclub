@@ -3,6 +3,7 @@
 @section('content')
 
   <div class="jumbotron">
+    <img src="http://localhost:8888/clubs/whatever/1500x600">
 
     @if ($signedIn)
       @if ($user)

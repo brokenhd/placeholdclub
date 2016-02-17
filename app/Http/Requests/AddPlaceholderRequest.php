@@ -27,7 +27,7 @@ class AddPlaceholderRequest extends Request
     public function rules()
     {
         return [
-          'placeholder' => 'required|mimes:jpg,png,gif'
+          'placeholder' => 'required'
         ];
     }
 }

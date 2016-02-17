@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Image;
 use Illuminate\Database\Eloquent\Model;
 
 class Club extends Model {
@@ -20,6 +21,25 @@ class Club extends Model {
    */
   public function addPlaceholder(Placeholder $placeholder) {
     return $this->placeholders()->save($placeholder);
+  }
+
+  /**
+   * Return a random placeholder from the group
+   * @return string
+   */
+  public function randomPlaceholder($width, $height) {
+
+    // TODO: Try to always use images that are always bigger than
+    // the type requested
+
+    $img = $this->placeholders()->get()->shuffle()->first()->path;
+    $crop = Image::make($img);
+
+    // $cropWidth = $crop->width();
+    // $cropHeight = $crop->height();
+
+    $crop->crop($width, $height);
+    return $crop->response();
   }
 
   /**
