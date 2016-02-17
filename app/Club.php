@@ -13,14 +13,7 @@ class Club extends Model {
    * Declare relationships
    */
   public function placeholders() { return $this->hasMany('App\Placeholder'); }
-  public function owner() { return $this->belongsTo('App\User', 'user_id'); }
-
-  /**
-   * A club is owned by a user
-   */
-  public function ownedBy(User $user) {
-    return $this->user_id == $user->id;
-  }
+  public function users() { return $this->belongsToMany('App\User')->withTimestamps(); }
 
   /**
    * Add the placeholder image to the club

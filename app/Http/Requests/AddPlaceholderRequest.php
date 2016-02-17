@@ -15,8 +15,7 @@ class AddPlaceholderRequest extends Request
     public function authorize()
     {
       return Club::where([
-        'slug' => $this->slug,
-        'user_id' => $this->user()->id
+        'slug' => $this->slug
       ])->exists();
     }
 

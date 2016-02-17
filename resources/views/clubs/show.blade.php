@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  @if ($user && $user->owns($club))
+  @if ($user && $user->canEdit($club))
     <form
       id="addPlaceholdersForm"
       class="dropzone"

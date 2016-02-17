@@ -27,13 +27,15 @@ class User extends Authenticatable
     /**
      * Relationships
      */
-    public function clubs() { return $this->hasMany('App\Club'); }
+    public function clubs() { return $this->belongsToMany('App\Club')->withTimestamps(); }
 
     /**
      * What does a user own
      */
-    public function owns($relation) {
-      return $relation->user_id == $this->id;
+    public function canEdit($club) {
+      $editor = Club::with('users')->find($club->id)->users->toArray();
+      // dd(array_flatten($editor));
+      return in_array($this->id, array_flatten($editor));
     }
 
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Club;
 use App\Placeholder;
 use App\Http\Requests\ClubRequest;
@@ -36,7 +35,7 @@ class ClubsController extends Controller {
    */
   public function show($slug) {
     $club = Club::where(compact('slug'))->firstOrFail();
-    
+
     return view('clubs.show', compact('club'));
   }
 
@@ -56,12 +55,14 @@ class ClubsController extends Controller {
   public function store(ClubRequest $request) {
 
     $club = new Club;
-    $club->user_id = $this->user->id;
     $club->name = $request->name;
     $club->slug = strtolower($request->name);
     $club->description = $request->description;
 
     $club->save();
+
+    $pivotClub = Club::find($club->id);
+    $pivotClub->users()->attach($this->user->id);
 
     flash()->overlay('Club created!', 'Now start uploading images!');
     return redirect("clubs/$club->slug");
