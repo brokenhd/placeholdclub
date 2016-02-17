@@ -10,6 +10,10 @@ class Club extends Model {
   protected $fillable = ['name', 'description', 'slug'];
   protected $appends = ['uri'];
 
+  public static $rules = array(
+    'name' => 'required|unique:clubs'
+  );
+
   /**
    * Declare relationships
    */

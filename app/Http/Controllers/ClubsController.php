@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 use App\Club;
 use App\Placeholder;
-use App\Http\Requests\ClubRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddPlaceholderRequest;
 
@@ -52,7 +52,11 @@ class ClubsController extends Controller {
    * @param  ClubRequest $request [description]
    * @return redirect to the created club
    */
-  public function store(ClubRequest $request) {
+  public function store(Request $request) {
+
+    $validator = $this->validate($request, [
+      'name' => 'required|unique:clubs|alpha_dash|max:30'
+    ]);
 
     $club = new Club;
     $club->name = $request->name;
