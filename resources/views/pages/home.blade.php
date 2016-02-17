@@ -6,16 +6,14 @@
     <img src="http://localhost:8888/clubs/whatever/1500x600">
 
     @if ($signedIn)
-      @if ($user)
+      <h2>Clubs</h2>
+      <hr>
 
-        <h2>Clubs</h2>
-        <hr>
-
-        @if ($user->clubs()->exists())
-          @foreach ($user->clubs()->get() as $club)
-            <a href="{{$club->uri}}">{{ $club->name }}</a>
-          @endforeach
-        @endif
+      @if ($user->clubs()->exists())
+        
+        @foreach ($user->clubs()->get() as $club)
+          <a href="{{$club->uri}}">{{ $club->name }}</a>
+        @endforeach
 
         <hr>
         <a href="clubs/create" class="btn btn-primary">Create a Club</a>
