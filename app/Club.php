@@ -39,10 +39,7 @@ class Club extends Model {
     $img = $this->placeholders()->get()->shuffle()->first()->path;
     $crop = Image::make($img);
 
-    // $cropWidth = $crop->width();
-    // $cropHeight = $crop->height();
-
-    $crop->crop($width, $height);
+    $crop->fit($width, $height);
     return $crop->response();
   }
 

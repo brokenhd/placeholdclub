@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Placeholder extends Model {
 
   protected $table = 'placeholders';
-  protected $fillable = ['path', 'name', 'thumbnail_path'];
+  protected $fillable = ['path', 'name', 'thumbnail_path', 'width', 'height'];
   protected $file;
 
   /**
@@ -39,7 +39,9 @@ class Placeholder extends Model {
     return $placeholder->fill([
       'name' => $placeholder->fileName(),
       'path' => $placeholder->filePath(),
-      'thumbnail_path' => $placeholder->thumbnailPath()
+      'thumbnail_path' => $placeholder->thumbnailPath(),
+      'width' => $placeholder->getWidth(),
+      'height' => $placeholder->getHeight()
     ]);
   }
 
@@ -75,6 +77,14 @@ class Placeholder extends Model {
    */
   public function baseDir() {
     return 'uploads/placeholders';
+  }
+
+  public function getWidth() {
+    return Image::make($this->file)->width();
+  }
+
+  public function getHeight() {
+    return Image::make($this->file)->height();
   }
 
   /**
