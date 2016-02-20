@@ -25,7 +25,7 @@ class ClubsController extends Controller {
    * TODO:: Route this to some sort of clubs listing page, clubs.index
    */
   public function index() {
-    return view('clubs.create');
+    return layout('clubs.create');
   }
 
   /**
@@ -36,14 +36,14 @@ class ClubsController extends Controller {
   public function show($slug) {
     $club = Club::where(compact('slug'))->firstOrFail();
 
-    return view('clubs.show', compact('club'));
+    return layout('clubs.show', compact('club'));
   }
 
   /**
    * Show the create club view
    */
   public function create() {
-    return view('clubs.create');
+    return layout('clubs.create');
   }
 
   /**

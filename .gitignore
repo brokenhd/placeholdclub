@@ -6,3 +6,4 @@ Homestead.yaml
 Homestead.json
 .env
 public/uploads/
+/resources/assets/node_modules

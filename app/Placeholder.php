@@ -79,10 +79,20 @@ class Placeholder extends Model {
     return 'uploads/placeholders';
   }
 
+  /**
+   * Get width of image
+   *
+   * @return int
+   */
   public function getWidth() {
     return Image::make($this->file)->width();
   }
 
+  /**
+   * Get height of image
+   *
+   * @return int
+   */
   public function getHeight() {
     return Image::make($this->file)->height();
   }
@@ -102,5 +112,16 @@ class Placeholder extends Model {
     */
   public function makeThumbnail() {
     Image::make($this->filePath())->fit(200)->save($this->thumbnailPath());
+  }
+
+  /**
+   * Delete the image
+   */
+  public function delete() {
+    \File::delete([
+      $this->path,
+      $this->thumbnail_path
+    ]);
+    parent::delete();
   }
 }

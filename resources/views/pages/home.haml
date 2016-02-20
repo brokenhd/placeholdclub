@@ -1,0 +1,13 @@
+.home
+	.container
+		-if ($signedIn)
+			%h2 Clubs
+			-if ($user->clubs()->exists())
+				-foreach ($user->clubs()->get() as $club)
+					%a(href="#{$club->uri}")!=$club->name
+			%a(href="clubs/create" class="btn btn-primary") Create a Club
+		-else
+			%h1 Placehold.Club
+			.links
+				%a(href="/login" class="button") Log In
+				%a(href="/register" class="button button-primary") Sign Up

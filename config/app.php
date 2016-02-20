@@ -149,6 +149,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         Intervention\Image\ImageServiceProvider::class,
+        Bkwld\LaravelHaml\ServiceProvider::class,
 
         /*
          * Application Service Providers...

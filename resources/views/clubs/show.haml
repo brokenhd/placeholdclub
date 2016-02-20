@@ -1,0 +1,23 @@
+%h1!= $club->name
+.description!= $club->description
+
+-foreach ($club->placeholders->chunk(4) as $set)
+  -foreach ($set as $placeholder)
+    %form(method="POST" action="/placeholders/#{ $placeholder->id }")
+      !=csrf_field()
+      %input(type="hidden" name="_method" value="DELETE")
+      %button(type="submit") x
+
+    %img(src="/#{ $placeholder->thumbnail_path }" alt="")
+
+-if ($user && $user->canEdit($club))
+  %form#addPlaceholdersForm.dropzone(action="#{ route('store_placeholder_path', [$club->slug]) }" method="POST")
+    !=csrf_field()
+
+%script(src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/dropzone.js")
+:javascript
+  Dropzone.options.addPlaceholdersForm = {
+    paramName: 'placeholder',
+    maxFilesize: 5,
+    acceptedFiles: '.jpg, .jpeg, .png, .gif'
+  }

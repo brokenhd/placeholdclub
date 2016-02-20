@@ -1,0 +1,30 @@
+.container
+	%h2 Login
+
+	%form(class="form-horizontal" role="form" method="POST" action="#{url('/login')}")
+		!=csrf_field()
+
+		.form-group
+			%label(class="col-md-4 control-label") E-Mail Address
+			%input(type="email" class="form-control" name="email" required)
+
+			-if ($errors->has('email'))
+				!=$errors->first('email')
+
+		.form-group
+			%label(class="col-md-4 control-label") Password
+			%input(type="password" class="form-control" name="password" required)
+
+			-if ($errors->has('password'))
+				%span(class="help-block")!= $errors->first('password')
+
+		.form-group
+			.checkbox
+				%label
+					%input(type="checkbox" name="remember") Remember Me
+
+		.form-group
+			%button(type="submit" class="btn btn-primary")
+				%i(class="fa fa-btn fa-sign-in")
+				Login
+			%a(class="btn btn-link" href="{{ url('/password/reset') }}") Forgot Your Password?

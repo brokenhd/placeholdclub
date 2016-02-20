@@ -1,0 +1,20 @@
+%h1 Create a club
+%form(enctype="multipart/form-data" method="POST" action="/clubs")
+	!=csrf_field()
+
+	.form-group
+		%label(for="name") Club Name:
+		%input(type="text" name="name" value="#{ old('name') }" required)
+
+	.form-group
+		%label(for="description") Club Description:
+		%input(type="text" name="description" value="#{ old('description') }" required)
+
+	.form-group
+		%button(type="submit") Create Club
+
+	-if (count($errors) > 0)
+		.alert.alert-danger
+			%ul
+				-foreach ($errors->all() as $error)
+					%li!= $error
