@@ -1,4 +1,4 @@
-/*! 📝 LUCRE 💾 2.19.16 👍 */
+/*! 📝 Placehold.Club 💾 2.20.16 👍 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// install a JSONP callback for chunk loading
 /******/ 	var parentJsonpFunction = window["webpackJsonp"];
